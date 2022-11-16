@@ -28,7 +28,32 @@ public class ScoreToActionUtil {
             List<GameState.HoleCard> playerCards,
             List<GameState.HoleCard> communityCards,
             int buyInAmount) {
+        boolean playerHasPair = playerCards.get(0).rank.equals(playerCards.get(1).rank);
+        if (playerHasPair) { // one pair in player other in community
+            if (buyInAmount > 100) {
+                return Action.CHECK_FOLD;
+            }
+            return Action.CALL;
+        }
+        boolean communityHasBothPairs = communityHasTwoPairs(communityCards);
+        if (communityHasBothPairs) {
+            if (buyInAmount > 50) {
+                return Action.CHECK_FOLD;
+            }
+            return Action.CALL;
+        }
         return Action.RAISE;
+    }
+
+    private static boolean communityHasTwoPairs(List<GameState.HoleCard> communityCards) {
+        int pairAmount = 0;
+        var cardsByRank = communityCards.stream().collect(Collectors.groupingBy(x -> x.rank));
+        for (Map.Entry<String, List<GameState.HoleCard>> cardByRank : cardsByRank.entrySet()) {
+            if (cardByRank.getValue().size() == 2) {
+                pairAmount += 1;
+            }
+        }
+        return pairAmount == 2;
     }
 
     private static Action highCardAction(List<GameState.HoleCard> cards, int buyInAmount) {
