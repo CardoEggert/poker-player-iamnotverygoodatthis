@@ -23,4 +23,15 @@ class RankClientTest {
         Assertions.assertEquals(result.rank,8);
 
     }
+
+    @Test
+    void getRank_twoCards() {
+        ArrayList<GameState.HoleCard> list = new ArrayList<>();
+        list.add(new GameState.HoleCard("5", "diamonds"));
+        list.add(new GameState.HoleCard("6", "diamonds"));
+        RankResponse result = RankClient.getRank(list);
+
+        Assertions.assertEquals(result.rank,0);
+
+    }
 }
