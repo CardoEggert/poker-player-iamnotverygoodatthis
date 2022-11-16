@@ -103,8 +103,18 @@ public class ScoreToActionUtil {
         boolean firstCardHigh = HIGH_PREFLOP_CARDS.contains(cards.get(0).rank);
         boolean secondCardHigh = HIGH_PREFLOP_CARDS.contains(cards.get(1).rank);
         if (isPair) {
-            if (firstCardHigh && secondCardHigh) {
+            if (HIGH_PREFLOP_CARDS.contains(cards.get(0).rank)) {
                 return Action.ALL_IN;
+            } else if (HIGH_CARDS.contains(cards.get(0).rank)) {
+                return Action.CALL;
+            } else if (LOW_CARDS.contains(cards.get(0).rank)) {
+                if (buyInAmount > 150) {
+                    return Action.CHECK_FOLD;
+                }
+                return Action.CALL;
+            }
+            if (buyInAmount > 250) {
+                return Action.CHECK_FOLD;
             }
             return Action.CALL;
         }
