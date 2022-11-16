@@ -3,6 +3,7 @@ package org.leanpoker.player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -11,7 +12,7 @@ public class Player {
 
 	static final String VERSION = "Default Java folding player";
 
-	static final ObjectMapper mapper = new ObjectMapper();
+	static final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 	public static int betRequest(JsonNode request) {
 		try {
