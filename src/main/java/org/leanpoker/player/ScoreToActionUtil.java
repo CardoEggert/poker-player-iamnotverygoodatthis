@@ -52,7 +52,7 @@ public class ScoreToActionUtil {
             if (rankingPairHigh) {
                 return Action.CALL;
             }
-            if (buyInAmount < 100) {
+            if (buyInAmount > 100) {
                 return Action.CHECK_FOLD;
             }
             return Action.CALL;
@@ -106,11 +106,14 @@ public class ScoreToActionUtil {
             if (firstCardHigh && secondCardHigh) {
                 return Action.ALL_IN;
             }
-            return Action.RAISE_X10;
+            return Action.CALL;
         }
         if (firstCardHigh && secondCardHigh) {
             return Action.ALL_IN;
         } else if (firstCardHigh || secondCardHigh) {
+            if (buyInAmount > 250) {
+                return Action.CHECK_FOLD;
+            }
             if (sameSuit) {
                 return Action.RAISE;
             }
