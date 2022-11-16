@@ -1,5 +1,10 @@
 package org.leanpoker.player;
 
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -9,10 +14,10 @@ import io.micronaut.http.annotation.Consumes;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
-import java.util.Map;
 
 @Controller()
 public class PlayerController {
+	  final static Logger logger = LoggerFactory.getLogger(PlayerController.class);
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -26,6 +31,12 @@ public class PlayerController {
     public String doPost(@Body Map<String, String> body) throws JsonProcessingException {
         String action = body.get("action");
         String gameState = body.get("game_state");
+        try {
+            GameState state = mapper.readValue(gameState, GameState.class);
+			logger.error("state", state);
+		} catch (Exception e) {
+			logger.error("gameState", e);
+		}
         if ("bet_request".equals(action)) {
             return String.valueOf(Player.betRequest(mapper.readTree(gameState)));
         }
