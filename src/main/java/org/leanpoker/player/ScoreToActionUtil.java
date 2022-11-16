@@ -57,12 +57,18 @@ public class ScoreToActionUtil {
             }
             return Action.CALL;
         }
-        if (playerHasPair || cards.size() < 7) {
+        if (playerHasPair) {
             boolean highCardPair = HIGH_CARDS.contains(playerCards.get(0).rank);
             if (highCardPair) {
                 return Action.ALL_IN;
             }
-            return Action.RAISE;
+            if (cards.size() < 7) {
+                if (buyInAmount > 100) {
+                    return Action.CHECK_FOLD;
+                }
+                return Action.CALL;
+            }
+            return Action.CALL;
         }
         return Action.CHECK_FOLD;
     }
