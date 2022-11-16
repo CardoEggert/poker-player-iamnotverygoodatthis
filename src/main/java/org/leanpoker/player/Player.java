@@ -42,7 +42,11 @@ public class Player {
     }
 
     public static int getRank(GameState state) {
-        return RankClient.getRank(getPlayerCards(state)).rank;
+        var playerCards = getPlayerCards(state);
+        if (playerCards.size() > 2) {
+            return RankClient.getRank(getPlayerCards(state)).rank;
+        }
+        return 0;
     }
 
     public static List<GameState.HoleCard> getPlayerCards(GameState state) {

@@ -27,7 +27,8 @@ public class ScoreToActionUtil {
 
     public static Action scoreToAction(List<GameState.HoleCard> cards, int score) {
         if (cards.size() == 2) {
-            if (score == 1) { // it is a pair
+            boolean isPair = cards.get(0).rank.equals(cards.get(1).rank);
+            if (isPair) {
                 return Action.RAISE_X10;
             }
             boolean firstCardHigh = HIGH_CARDS.contains(cards.get(0).rank);
