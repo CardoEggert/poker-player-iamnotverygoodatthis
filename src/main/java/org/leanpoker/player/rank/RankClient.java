@@ -3,6 +3,7 @@ package org.leanpoker.player.rank;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.List;
 
 import org.leanpoker.player.GameState;
@@ -13,7 +14,9 @@ import io.micronaut.http.uri.UriBuilder;
 
 public class RankClient {
 
-    private static final HttpClient httpClient = HttpClient.newHttpClient();
+    private static final HttpClient httpClient = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(2))
+            .build();
     private static ObjectMapper mapper = new ObjectMapper();
 
     public static RankResponse getRank(List<GameState.HoleCard> listOfCards) {
