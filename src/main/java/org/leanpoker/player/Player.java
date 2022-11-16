@@ -24,5 +24,11 @@ public class Player {
 	}
 
 	public static void showdown(JsonNode game) {
+		try {
+			GameState state = mapper.treeToValue(game, GameState.class);
+			logger.info("state {}", state);
+		} catch (Exception e) {
+			logger.error("gameState", e);
+		}
 	}
 }
