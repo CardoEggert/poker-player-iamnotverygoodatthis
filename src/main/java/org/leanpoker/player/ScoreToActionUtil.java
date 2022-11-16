@@ -121,11 +121,8 @@ public class ScoreToActionUtil {
         if (firstCardHigh && secondCardHigh) {
             return Action.RAISE;
         } else if (firstCardHigh || secondCardHigh) {
-            if (buyInAmount > 250) {
+            if (buyInAmount >= 250) {
                 return Action.CHECK_FOLD;
-            }
-            if (sameSuit) {
-                return Action.RAISE;
             }
             return Action.CALL;
         } else {
