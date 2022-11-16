@@ -45,7 +45,7 @@ public class ScoreToActionUtil {
         return Action.CHECK_FOLD;
     }
 
-    public static final Set<String> HIGH_CARDS = Set.of("A", "K", "Q");
+    public static final Set<String> HIGH_CARDS = Set.of("A", "K", "Q", "J", "10");
     public static final Set<String> LOW_CARDS = Set.of("2", "3", "4", "5", "6", "7", "8");
 
     public static Action scoreToAction(List<GameState.HoleCard> playerCards, List<GameState.HoleCard> communityCards, int score, int buyInAmount) {
