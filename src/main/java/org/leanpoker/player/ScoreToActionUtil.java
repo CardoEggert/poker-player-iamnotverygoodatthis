@@ -109,7 +109,7 @@ public class ScoreToActionUtil {
             return Action.CALL;
         }
         if (firstCardHigh && secondCardHigh) {
-            return Action.ALL_IN;
+            return Action.RAISE;
         } else if (firstCardHigh || secondCardHigh) {
             if (buyInAmount > 250) {
                 return Action.CHECK_FOLD;
