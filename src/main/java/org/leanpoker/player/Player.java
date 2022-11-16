@@ -15,7 +15,7 @@ public class Player {
 
     final static Logger logger = LoggerFactory.getLogger(Player.class);
 
-    static final String VERSION = "Playing Java player 0.1.1";
+    static final String VERSION = "Playing Java player 0.1.2";
 
     static final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
