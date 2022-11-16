@@ -30,7 +30,16 @@ public class GameState {
 	public static class HoleCard{
 	    public String rank;
 	    public String suit;
-		@Override
+
+        public HoleCard() {
+        }
+
+        public HoleCard(String rank, String suit) {
+            this.rank = rank;
+            this.suit = suit;
+        }
+
+        @Override
 		public String toString() {
 			return "HoleCard [rank=" + rank + ", suit=" + suit + "]";
 		}
