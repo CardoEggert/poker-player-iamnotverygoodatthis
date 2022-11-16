@@ -59,6 +59,11 @@ public class ScoreToActionUtil {
                     return Action.RAISE_X4;
                 }
                 return Action.RAISE_X2;
+            } else if (firstCardHigh || secondCardHigh) {
+                if (sameSuit) {
+                    return Action.RAISE;
+                }
+                return Action.CALL;
             } else {
                 boolean firstCardLow = LOW_CARDS.contains(cards.get(0).rank);
                 boolean secondCardLow = LOW_CARDS.contains(cards.get(1).rank);
