@@ -11,7 +11,7 @@ public class ScoreToActionUtil {
     public static Action scoreToActionWithMoreCards(List<GameState.HoleCard> cards, List<GameState.HoleCard> playerCards, List<GameState.HoleCard> communityCards, int score, int buyInAmount) {
         return switch (score) {
             case 0 -> highCardAction(cards, buyInAmount);
-            case 1 -> pairCardAction(cards, playerCards, communityCards, buyInAmount);
+            case 1 -> pairCardAction(cards, playerCards, communityCards);
             case 2 -> // Two Pairs
                     Action.RAISE; // Three of a kind
             case 3, 4 -> // Straight
@@ -37,23 +37,16 @@ public class ScoreToActionUtil {
     private static Action pairCardAction(
             List<GameState.HoleCard> cards,
             List<GameState.HoleCard> playerCards,
-            List<GameState.HoleCard> communityCards,
-            int buyInAmount) {
+            List<GameState.HoleCard> communityCards) {
         boolean communityHasPair = communityHasPairs(communityCards);
         boolean playerHasPair = playerCards.get(0).rank.equals(playerCards.get(1).rank);
         if (!communityHasPair && !playerHasPair) {
-            if (buyInAmount > 200) {
-                return Action.CHECK_FOLD;
-            }
             return Action.RAISE;
         }
         if (playerHasPair || cards.size() < 7) {
             boolean highCardPair = HIGH_CARDS.contains(playerCards.get(0).rank);
             if (highCardPair) {
                 return Action.ALL_IN;
-            }
-            if (buyInAmount > 200) {
-                return Action.CHECK_FOLD;
             }
             return Action.RAISE;
         }
