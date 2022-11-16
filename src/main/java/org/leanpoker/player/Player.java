@@ -22,7 +22,10 @@ public class Player {
     public static int betRequest(JsonNode request) {
         try {
             GameState state = mapper.treeToValue(request, GameState.class);
-            var action = ScoreToActionUtil.scoreToAction(getPlayerCards(state), getRank(state));
+            var action = ScoreToActionUtil.scoreToAction(
+                    state.getPlayerCards(),
+                    state.community_cards.stream().map(cc -> new GameState.HoleCard(cc.rank, cc.suit)).toList(),
+                    getRank(state));
             logger.info("state {}", request.toPrettyString());
             logger.info("action {}", action);
             return BettingUtil.bet(state,action);
