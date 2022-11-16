@@ -70,6 +70,7 @@ public class ScoreToActionUtil {
         return false;
     }
 
+    public static final Set<String> HIGH_PREFLOP_CARDS = Set.of("A", "K", "Q");
     public static final Set<String> HIGH_CARDS = Set.of("A", "K", "Q", "J", "10");
     public static final Set<String> LOW_CARDS = Set.of("2", "3", "4", "5", "6", "7", "8");
 
@@ -82,14 +83,11 @@ public class ScoreToActionUtil {
             if (isPair) {
                 return Action.RAISE_X10;
             }
-            boolean firstCardHigh = HIGH_CARDS.contains(cards.get(0).rank);
-            boolean secondCardHigh = HIGH_CARDS.contains(cards.get(1).rank);
+            boolean firstCardHigh = HIGH_PREFLOP_CARDS.contains(cards.get(0).rank);
+            boolean secondCardHigh = HIGH_PREFLOP_CARDS.contains(cards.get(1).rank);
             boolean sameSuit = cards.get(0).suit.equals(cards.get(1).suit);
             if (firstCardHigh && secondCardHigh) {
-                if (sameSuit) {
-                    return Action.RAISE_X4;
-                }
-                return Action.RAISE_X2;
+                return Action.ALL_IN;
             } else if (firstCardHigh || secondCardHigh) {
                 if (sameSuit) {
                     return Action.RAISE;
