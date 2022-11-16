@@ -82,7 +82,7 @@ public class ScoreToActionUtil {
                 return Action.CHECK_FOLD;
             }
         }
-        return scoreToActionWithMoreCards(cards, playerCards, communityCards, score);
+        return scoreToActionWithMoreCards(cards, playerCards, communityCards, score, buyInAmount);
     }
 
 }
