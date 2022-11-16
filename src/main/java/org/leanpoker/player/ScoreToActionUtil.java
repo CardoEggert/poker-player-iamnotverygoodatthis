@@ -73,12 +73,15 @@ public class ScoreToActionUtil {
         cards.addAll(communityCards);
         if (cards.size() == 2) {
             boolean isPair = cards.get(0).rank.equals(cards.get(1).rank);
-            if (isPair) {
-                return Action.RAISE_X10;
-            }
+            boolean sameSuit = cards.get(0).suit.equals(cards.get(1).suit);
             boolean firstCardHigh = HIGH_PREFLOP_CARDS.contains(cards.get(0).rank);
             boolean secondCardHigh = HIGH_PREFLOP_CARDS.contains(cards.get(1).rank);
-            boolean sameSuit = cards.get(0).suit.equals(cards.get(1).suit);
+            if (isPair) {
+                if (firstCardHigh && secondCardHigh) {
+                    return Action.ALL_IN;
+                }
+                return Action.RAISE_X10;
+            }
             if (firstCardHigh && secondCardHigh) {
                 return Action.ALL_IN;
             } else if (firstCardHigh || secondCardHigh) {
@@ -89,7 +92,12 @@ public class ScoreToActionUtil {
             } else {
                 boolean firstCardLow = LOW_CARDS.contains(cards.get(0).rank);
                 boolean secondCardLow = LOW_CARDS.contains(cards.get(1).rank);
-                if (firstCardLow && secondCardLow) {
+                if (!firstCardLow && !secondCardLow) {
+                    if (buyInAmount > 50) {
+                        return Action.CHECK_FOLD;
+                    }
+                    return Action.CALL;
+                } else if (firstCardLow && secondCardLow) {
                     return Action.CHECK_FOLD;
                 }
                 if (sameSuit) {
