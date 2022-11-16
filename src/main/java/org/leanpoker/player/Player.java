@@ -15,15 +15,14 @@ public class Player {
 
     final static Logger logger = LoggerFactory.getLogger(Player.class);
 
-    static final String VERSION = "Playing Java player 0.1";
+    static final String VERSION = "Playing Java player 0.1.1";
 
     static final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     public static int betRequest(JsonNode request) {
         try {
             GameState state = mapper.treeToValue(request, GameState.class);
-            var rank = getRank(state);
-            var action = ScoreToActionUtil.scoreToAction(rank);
+            var action = ScoreToActionUtil.scoreToAction(getPlayerCards(state), getRank(state));
             logger.info("state {}", request.toPrettyString());
             logger.info("action {}", action);
             return BettingUtil.bet(state,action);
@@ -43,10 +42,13 @@ public class Player {
     }
 
     public static int getRank(GameState state) {
+        return RankClient.getRank(getPlayerCards(state)).rank;
+    }
+
+    public static List<GameState.HoleCard> getPlayerCards(GameState state) {
         List<GameState.HoleCard> cards = new ArrayList<>();
         cards.addAll(state.getPlayerCards());
         cards.addAll(state.community_cards.stream().map(cc -> new GameState.HoleCard(cc.rank, cc.suit)).toList());
-        var response = RankClient.getRank(cards);
-        return response.rank;
+        return cards;
     }
 }
