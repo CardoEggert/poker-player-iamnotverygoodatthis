@@ -47,15 +47,15 @@ public class ScoreToActionUtil {
                 }
                 return Action.RAISE_X2;
             } else {
-                if (sameSuit) {
-                    return Action.RAISE;
-                }
                 boolean firstCardLow = LOW_CARDS.contains(cards.get(0).rank);
                 boolean secondCardLow = LOW_CARDS.contains(cards.get(1).rank);
                 if (firstCardLow && secondCardLow) {
                     return Action.CHECK_FOLD;
                 }
-                return Action.CALL;
+                if (sameSuit) {
+                    return Action.CALL;
+                }
+                return Action.CHECK_FOLD;
             }
         }
         return scoreToActionWithMoreCards(cards, score);
