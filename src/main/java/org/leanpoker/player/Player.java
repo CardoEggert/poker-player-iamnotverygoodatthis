@@ -17,7 +17,7 @@ public class Player {
 	public static int betRequest(JsonNode request) {
 		try {
 			GameState state = mapper.treeToValue(request, GameState.class);
-			logger.info("state {}", state);
+			logger.info("state {}", request.toPrettyString());
 		} catch (Exception e) {
 			logger.error("gameState", e);
 		}
@@ -27,7 +27,7 @@ public class Player {
 	public static void showdown(JsonNode game) {
 		try {
 			GameState state = mapper.treeToValue(game, GameState.class);
-			logger.info("state {}", state);
+			logger.info("state {}", game.toPrettyString());
 		} catch (Exception e) {
 			logger.error("gameState", e);
 		}
