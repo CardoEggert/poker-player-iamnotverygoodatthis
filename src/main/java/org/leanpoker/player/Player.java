@@ -25,7 +25,8 @@ public class Player {
             var action = ScoreToActionUtil.scoreToAction(
                     state.getPlayerCards(),
                     state.community_cards.stream().map(cc -> new GameState.HoleCard(cc.rank, cc.suit)).toList(),
-                    getRank(state));
+                    getRank(state),
+                    state.current_buy_in);
             logger.info("state {}", request.toPrettyString());
             logger.info("action {}", action);
             return BettingUtil.bet(state,action);
