@@ -12,8 +12,7 @@ public class ScoreToActionUtil {
         return switch (score) {
             case 0 -> highCardAction(cards, buyInAmount);
             case 1 -> pairCardAction(cards, playerCards, communityCards, buyInAmount);
-            case 2 -> // Two Pairs
-                    Action.RAISE; // Three of a kind
+            case 2 -> twoPairAction(cards, playerCards, communityCards, buyInAmount);
             case 3, 4 -> // Straight
                     Action.RAISE_X2; // Flush
             // Full house
@@ -22,6 +21,14 @@ public class ScoreToActionUtil {
                     Action.ALL_IN;
             default -> Action.CHECK_FOLD;
         };
+    }
+
+    private static Action twoPairAction(
+            List<GameState.HoleCard> cards,
+            List<GameState.HoleCard> playerCards,
+            List<GameState.HoleCard> communityCards,
+            int buyInAmount) {
+        return Action.RAISE;
     }
 
     private static Action highCardAction(List<GameState.HoleCard> cards, int buyInAmount) {
@@ -121,7 +128,7 @@ public class ScoreToActionUtil {
         if (firstCardHigh && secondCardHigh) {
             return Action.RAISE;
         } else if (firstCardHigh || secondCardHigh) {
-            if (buyInAmount >= 250) {
+            if (buyInAmount >= 50) {
                 return Action.CHECK_FOLD;
             }
             return Action.CALL;
