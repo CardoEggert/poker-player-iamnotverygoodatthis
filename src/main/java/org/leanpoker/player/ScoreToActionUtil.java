@@ -5,10 +5,9 @@ import java.util.Set;
 
 public class ScoreToActionUtil {
 
-    public static Action scoreToAction(int score) {
+    public static Action scoreToActionWithMoreCards(List<GameState.HoleCard> cards, int score) {
         return switch (score) {
-            case 0 -> // High card
-                    Action.CHECK_FOLD;
+            case 0 -> highCardAction(cards);
             case 1 -> // Pair
                     Action.CALL;
             case 2 -> // Two Pairs
@@ -23,7 +22,15 @@ public class ScoreToActionUtil {
         };
     }
 
+    private static Action highCardAction(List<GameState.HoleCard> cards) {
+        if (cards.size() < 7) {
+            return Action.CALL;
+        }
+        return Action.CHECK_FOLD;
+    }
+
     public static final Set<String> HIGH_CARDS = Set.of("A", "K", "Q");
+    public static final Set<String> LOW_CARDS = Set.of("2", "3", "4", "5", "6", "7", "8");
 
     public static Action scoreToAction(List<GameState.HoleCard> cards, int score) {
         if (cards.size() == 2) {
@@ -43,10 +50,15 @@ public class ScoreToActionUtil {
                 if (sameSuit) {
                     return Action.RAISE;
                 }
+                boolean firstCardLow = LOW_CARDS.contains(cards.get(0).rank);
+                boolean secondCardLow = LOW_CARDS.contains(cards.get(1).rank);
+                if (firstCardLow && secondCardLow) {
+                    return Action.CHECK_FOLD;
+                }
                 return Action.CALL;
             }
         }
-        return scoreToAction(score);
+        return scoreToActionWithMoreCards(cards, score);
     }
 
 }
