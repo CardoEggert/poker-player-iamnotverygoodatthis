@@ -13,11 +13,12 @@ public class BettingUtil {
 		case ALL_IN:
 			return p.stack;
 		case CALL:
-			return currentBuyIn - currentBet;
+			return Math.min(p.stack, currentBuyIn - currentBet);
 		case RAISE:
-			return currentBuyIn - currentBet + minimumraise;
 		case RAISE_X2:
-			return currentBuyIn - currentBet + (2 * minimumraise);
+		case RAISE_X4:
+		case RAISE_X10:
+			return Math.min(p.stack, currentBuyIn - currentBet + minimumraise);
 		}
 		return 0;
 	}
