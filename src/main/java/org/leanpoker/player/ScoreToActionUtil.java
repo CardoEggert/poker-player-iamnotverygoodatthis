@@ -130,6 +130,9 @@ public class ScoreToActionUtil {
                 return Action.CHECK_FOLD;
             }
             if (sameSuit) {
+                if (buyInAmount > 50) {
+                    return Action.CHECK_FOLD;
+                }
                 return Action.CALL;
             }
             return Action.CHECK_FOLD;
