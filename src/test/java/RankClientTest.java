@@ -3,9 +3,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.leanpoker.player.GameState;
+import org.leanpoker.player.rank.RankClient;
 import org.leanpoker.player.rank.RankResponse;
-
-import static org.leanpoker.player.rank.RankClient.GetRank;
 
 class RankClientTest {
 
@@ -19,7 +18,7 @@ class RankClientTest {
         list.add(new GameState.HoleCard("8", "diamonds"));
         list.add(new GameState.HoleCard("9", "diamonds"));
 
-        RankResponse result = GetRank(list);
+        RankResponse result = RankClient.getRank(list);
 
         Assertions.assertEquals(result.rank,8);
 

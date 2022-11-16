@@ -3,7 +3,6 @@ package org.leanpoker.player.rank;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.leanpoker.player.GameState;
@@ -17,7 +16,7 @@ public class RankClient {
     private static final HttpClient httpClient = HttpClient.newHttpClient();
     private static ObjectMapper mapper = new ObjectMapper();
 
-    public static RankResponse GetRank(List<GameState.HoleCard> listOfCards) {
+    public static RankResponse getRank(List<GameState.HoleCard> listOfCards) {
         try {
             String cards = mapper.writeValueAsString(listOfCards);
             var url = UriBuilder
