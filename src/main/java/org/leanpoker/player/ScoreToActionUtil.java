@@ -2,14 +2,16 @@ package org.leanpoker.player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ScoreToActionUtil {
 
     public static Action scoreToActionWithMoreCards(List<GameState.HoleCard> cards, List<GameState.HoleCard> playerCards, List<GameState.HoleCard> communityCards, int score, int buyInAmount) {
         return switch (score) {
             case 0 -> highCardAction(cards, buyInAmount);
-            case 1 -> pairCardAction(cards, playerCards, buyInAmount);
+            case 1 -> pairCardAction(cards, playerCards, communityCards, buyInAmount);
             case 2 -> // Two Pairs
                     Action.RAISE; // Three of a kind
             case 3, 4 -> // Straight
@@ -34,15 +36,38 @@ public class ScoreToActionUtil {
 
     private static Action pairCardAction(
             List<GameState.HoleCard> cards,
-            List<GameState.HoleCard> playerCards, int buyInAmount) {
+            List<GameState.HoleCard> playerCards,
+            List<GameState.HoleCard> communityCards,
+            int buyInAmount) {
+        boolean communityHasPair = communityHasPairs(communityCards);
         boolean playerHasPair = playerCards.get(0).rank.equals(playerCards.get(1).rank);
-        if (playerHasPair || cards.size() < 7) {
-            if (buyInAmount > 100) {
+        if (!communityHasPair && !playerHasPair) {
+            if (buyInAmount > 200) {
                 return Action.CHECK_FOLD;
             }
-            return Action.CALL;
+            return Action.RAISE;
+        }
+        if (playerHasPair || cards.size() < 7) {
+            boolean highCardPair = HIGH_CARDS.contains(playerCards.get(0).rank);
+            if (highCardPair) {
+                return Action.ALL_IN;
+            }
+            if (buyInAmount > 200) {
+                return Action.CHECK_FOLD;
+            }
+            return Action.RAISE;
         }
         return Action.CHECK_FOLD;
+    }
+
+    private static boolean communityHasPairs(List<GameState.HoleCard> communityCards) {
+        var cardsByRank = communityCards.stream().collect(Collectors.groupingBy(x -> x.rank));
+        for (Map.Entry<String, List<GameState.HoleCard>> cardByRank : cardsByRank.entrySet()) {
+            if (cardByRank.getValue().size() > 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static final Set<String> HIGH_CARDS = Set.of("A", "K", "Q", "J", "10");
